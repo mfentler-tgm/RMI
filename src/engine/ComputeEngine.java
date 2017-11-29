@@ -39,14 +39,19 @@ import compute.Task;
 
 public class ComputeEngine implements Compute {
 
-    public ComputeEngine() {
+	public ComputeEngine() {
         super();
     }
-
+	
     public <T> T executeTask(Task<T> t) {
-        return t.execute();
+        //hier kommt round Robin rein
+    	String name = "Compute";
+        Registry registry = LocateRegistry.getRegistry(args[0]);
+        Compute comp = (Compute) registry.lookup(name);
+    	return t.execute();
     }
 
+    /**
     public static void main(String[] args) {
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
@@ -59,10 +64,10 @@ public class ComputeEngine implements Compute {
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.rebind(name, stub);
             System.out.println("ComputeEngine bound");
-            //UnicastRemoteObject.unexportObject(stub, false); //Mein Entry
         } catch (Exception e) {
             System.err.println("ComputeEngine exception:");
             e.printStackTrace();
         }
     }
+    */
 }
